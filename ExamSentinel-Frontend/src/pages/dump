@@ -1,0 +1,111 @@
+ <button
+              onClick={handleLogout}
+              className="flex items-center space-x-2 px-3 py-1 text-red-600 hover:bg-red-50 rounded-md transition duration-300"
+            >
+              <LogOut size={16} />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
+
+
+              const handleLogout = () => {
+    uiDispatch(showLogoutConfirmation());
+  };
+
+  const confirmLogout = () => {
+    logExamEvent("STUDENT_LOGOUT_CLICKED");
+    uiDispatch(hideLogoutConfirmation());
+    authDispatch(logout())
+      .unwrap()
+      .then(() => {
+        // toast.success("Logout successful");
+        logExamEvent("STUDENT_LOGOUT_SUCCESS");
+        navigate("/");
+      })
+      .catch(() => {
+        logExamEvent("LOGOUT_FAILED");
+        // toast.error("Logout failed");
+      });
+  };
+
+  const cancelLogout = () => {
+    uiDispatch(hideLogoutConfirmation());
+  };
+
+
+   <ConfirmDialog
+        isOpen={showLogoutModal}
+        title="Logout"
+        message="Are you sure you want to logout? Your exam progress will be lost."
+        confirmText="Logout"
+        cancelText="Cancel"
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+        type="danger"
+      />
+
+
+       {/* Options Section - Takes remaining 60-65% of available space */}
+              {/* <div className="flex-1 min-h-0 mt-3">
+                <div className="h-full overflow-y-auto p-2">
+                  <div className="space-y-3">
+                    {["option_a", "option_b", "option_c", "option_d"].map(
+                      (key, index) => {
+                        const optionText = currentQuestion[key];
+                        // if (!optionText) return null;
+
+                        const optionImageRefKey = `${key}_image`;
+                        const optionImageRef = currentQuestion[optionImageRefKey];
+                        const optionLetter = String.fromCharCode(65 + index);
+                        const isSelected = selectedOption === optionLetter;
+
+                        return (
+                          <div
+                            key={optionLetter}
+                            className={`flex items-start space-x-3 p-3 rounded-md shadow-sm border transition 
+              ${isSelected
+                                ? "bg-blue-50 border-blue-500 ring-2 ring-blue-400"
+                                : "bg-gray-50 border-gray-200"
+                              }`}
+                          >
+                            <input
+                              type="radio"
+                              id={`option-${optionLetter}`}
+                              name="answer"
+                              value={optionLetter}
+                              checked={isSelected}
+                              onChange={() => handleOptionSelect(optionLetter)}
+                              className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0"
+                            />
+
+                            <label
+                              htmlFor={`option-${optionLetter}`}
+                              className="flex flex-col text-gray-800 text-sm cursor-pointer w-full min-w-0"
+                            >
+                              <span className="flex items-center">
+                                <span className="font-semibold mr-4 flex-shrink-0">
+                                  {optionLetter}.
+                                </span>
+                                {optionText &&
+                                  (<span className="text-base font-medium leading-snug break-words">
+                                    {optionText}
+                                  </span>)
+                                }
+                              </span>
+
+                              {optionImageRef && imageUrls[optionImageRef] && (
+                                <div className="mt-2 ml-6">
+                                  <img
+                                    src={imageUrls[optionImageRef]}
+                                    alt={`Option ${optionLetter}`}
+                                    className="max-w-sm max-h-20 object-contain rounded-md shadow"
+                                  />
+                                </div>
+                              )}
+                            </label>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              </div> */}

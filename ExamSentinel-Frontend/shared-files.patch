@@ -1,0 +1,105 @@
+--- a/src/routes/RoleBasedRoutes.jsx
++++ b/src/routes/RoleBasedRoutes.jsx
+@@ -12,6 +12,7 @@
+ import MasterControls from "@/features/admin/Exam_Controls/MasterControls";
+ import SeatMapping from "@/features/mapping/SeatMapping/SeatMapping";
+ import ClientPreference from "@/features/client/ClientPreferences/ClientPreference";
++import { interviewAdminRoutes, interviewCandidateRoutes, CANDIDATE_ROLE_ID } from "@/features/interview/interviewRoutes";
+ 
+ 
+ // Lazy load components
+@@ -60,6 +61,7 @@
+ export const RoleBasedRoutes = {
+     // Admin routes (role_id: 1)
+     admin: [
++        ...interviewAdminRoutes, // Interview module
+         {
+             path: "/admin/dashboard",
+             element: (
+@@ -464,6 +466,7 @@
+         },
+     ],
+     // Operator routes (role_id: 5)
++    candidate: interviewCandidateRoutes, // Interview module
+     operator: [
+         {
+             path: "/operator/dashboard",
+@@ -606,7 +609,8 @@
+         1: 'admin',
+         2: 'client',
+         3: 'classInvigilator',
+-        5: 'operator'
++        5: 'operator',
++        [CANDIDATE_ROLE_ID]: 'candidate'
+     };
+ 
+     const roleName = roleMap[userRole];
+--- a/src/contexts/menuConfig.js
++++ b/src/contexts/menuConfig.js
+@@ -9,6 +9,7 @@
+ //   Building2,
+ //   UserCheck
+ // } from "lucide-react";
++import { interviewAdminMenu, interviewCandidateMenu, CANDIDATE_ROLE_ID } from "@/features/interview/interviewRoutes";
+ 
+ // export const menuConfig = [
+ //   {
+@@ -269,6 +270,7 @@
+ export const roleBasedMenuConfig = {
+   // Admin menu configuration (role_id: 1)
+   admin: [
++    interviewAdminMenu, // Interview module
+     {
+       id: 'dashboard',
+       title: 'Dashboard',
+@@ -720,6 +722,7 @@
+     }
+   ],
+ 
++    candidate: [interviewCandidateMenu], // Interview module
+     operator: [
+     {
+       id: 'dashboard',
+@@ -915,7 +918,8 @@
+     1: 'admin',
+     2: 'client',
+     3: 'classInvigilator',
+-    5: 'operator'
++    5: 'operator',
++    [CANDIDATE_ROLE_ID]: 'candidate'
+   };
+   
+   const roleName = roleMap[userRole];
+--- a/src/contexts/RoleDashboardRouter.jsx
++++ b/src/contexts/RoleDashboardRouter.jsx
+@@ -24,6 +24,8 @@
+             return <Navigate to="/client/dashboard" replace />;
+         case 3:
+             return <Navigate to="/class-invigilator/dashboard" replace />;
++        case 6: // Candidate (Interview module)
++            return <Navigate to="/candidate/interviews" replace />;
+         case 5:
+             return <Navigate to="/operator/dashboard" replace />;
+         default:
+--- a/src/pages/AdminLogin.jsx
++++ b/src/pages/AdminLogin.jsx
+@@ -58,6 +58,8 @@
+           navigate("/class-invigilator/dashboard");
+         } if (user.user_role_id === 5) {
+           navigate("/operator/dashboard");
++        } if (user.user_role_id === 6) {
++          navigate("/candidate/interviews"); // Interview candidate
+         }
+       } else {
+         toast.error("Invalid user credentials");
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -222,6 +222,8 @@
+       return '/client/dashboard';
+     case 3: // Class Invigilator
+       return '/class-invigilator/dashboard';
++    case 6: // Interview candidate
++      return '/candidate/interviews';
+     default:
+       // return '/login';
+       return '/';

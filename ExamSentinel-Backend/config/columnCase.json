@@ -1,0 +1,18 @@
+{
+  "client_pref_key_to_show_yn": "client_pref_key_to_show_YN",
+  "createdat": "createdAt",
+  "language": "Language",
+  "mark": "Mark",
+  "negativemark": "NegativeMark",
+  "duration": "Duration",
+  "difficultylevel": "DifficultyLevel",
+  "reference": "Reference",
+  "randomizeoption": "RandomizeOption",
+  "group_question_no": "Group_question_No",
+  "imageref": "imageRef",
+  "sq_map_for_col_a": "sq_map_for_col_A",
+  "sq_map_for_col_b": "sq_map_for_col_B",
+  "sq_map_for_col_c": "sq_map_for_col_C",
+  "sq_map_for_col_d": "sq_map_for_col_D",
+  "category": "Category"
+}
